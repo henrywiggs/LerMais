@@ -1,0 +1,46 @@
+create database lermais;
+
+use lermais;
+
+-- 1. Categoria
+CREATE TABLE Categoria (
+    id_categoria INT PRIMARY KEY,
+    nome_categoria VARCHAR(100) NOT NULL
+);
+
+-- 2. Livro
+CREATE TABLE Livro (
+    id_livro INT PRIMARY KEY,
+    nome_livro VARCHAR(100) NOT NULL,
+    autor_livro VARCHAR(100),
+    estoque_livro INT NOT NULL,
+    fk_id_categoria INT NOT NULL,
+    FOREIGN KEY (fk_id_categoria) REFERENCES Categoria(id_categoria)
+);
+
+-- 3. Cliente
+CREATE TABLE Cliente (
+    id_cliente INT PRIMARY KEY,
+    cpf_cliente VARCHAR(14) UNIQUE NOT NULL,
+    nome_cliente VARCHAR(100) NOT NULL,
+    contato_cliente VARCHAR(15) NOT NULL  
+);
+
+-- 4. Livro_Aluguel
+CREATE TABLE Livro_Aluguel (
+    id_livro_aluguel INT PRIMARY KEY,
+    fk_id_livro INT NOT NULL,
+    qtd_aluguel INT NOT NULL DEFAULT 1,  -- Novo campo adicionado
+    FOREIGN KEY (fk_id_livro) REFERENCES Livro(id_livro)
+);
+
+-- 5. Aluguel
+CREATE TABLE Aluguel (
+    id_aluguel INT PRIMARY KEY,
+    fk_id_cliente INT NOT NULL,
+    fk_id_livro_aluguel INT,
+    data_coleta DATE NOT NULL,
+    dias_aluguel INT NOT NULL,
+    FOREIGN KEY (fk_id_cliente) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (fk_id_livro_aluguel) REFERENCES Livro_Aluguel(id_livro_aluguel)
+);
